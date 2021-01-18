@@ -8,7 +8,6 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 const useSplitId = (id) => {
-  console.log(id);
   const splitId = id.split('-');
   const value = splitId[0];
   const name = splitId[1];
@@ -32,7 +31,9 @@ const RederItem = ({ color }) => {
     <StyledColumn color={hex.value}>
       <CardButton>
         <WithThemeText contrast={contrast.value}>{name.value}</WithThemeText>
-        <WithThemeText contrast={contrast.value}>{hex.value}</WithThemeText>
+        <WithThemeText style={{ fontSize: '1rem' }} contrast={contrast.value}>
+          {hex.value}
+        </WithThemeText>
         <Hr contrast={contrast.value} />
         <Link
           href="/detail/[id]/"
@@ -42,6 +43,28 @@ const RederItem = ({ color }) => {
         </Link>
       </CardButton>
     </StyledColumn>
+  );
+};
+
+const HeaderDetail = ({ item: { name, value, theme }, firstDarkColor }) => {
+  const styles = styleSheet(value, theme, firstDarkColor);
+
+  return (
+    <>
+      <div style={styles.header}>
+        <div style={styles.linkHome}>
+          <Link href="/">Home</Link>
+        </div>
+        <div>
+          <h1>{name}</h1>
+          <h4 style={{ textAlign: 'center' }}>#{value}</h4>
+        </div>
+      </div>
+      <div style={styles.sectionTitle}>
+        <h1>Pallete</h1>
+        <Hr />
+      </div>
+    </>
   );
 };
 
@@ -59,27 +82,40 @@ function Detail() {
 
   if (!id) return null;
   const [name, value, theme] = useSplitId(id);
-  const styles = styleSheet(value, theme);
 
   return (
-    <StyledContainer>
-      <div style={styles.header}>
-        <h1>{name}</h1>
-      </div>
-      {data?.colors.map((clr, i) => {
-        return <RederItem key={i} color={clr} />;
-      })}
-    </StyledContainer>
+    <>
+      <HeaderDetail
+        firstDarkColor={data?.colors[0].hex.value}
+        item={{ name, value, theme }}
+      />
+      <StyledContainer>
+        {data?.colors.map((clr, i) => {
+          return <RederItem key={i} color={clr} />;
+        })}
+      </StyledContainer>
+    </>
   );
 }
 
-const styleSheet = (color, theme) => ({
+const styleSheet = (color, theme, firstDarkColor) => ({
   header: {
-    width: '100vw',
     backgroundColor: `#${color}`,
-    minHeight: '100px',
-    textAlign: 'center',
     color: theme === 'light' ? '#000' : '#fff',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  sectionTitle: {
+    width: '100vw',
+    paddingLeft: '3rem',
+    textAlign: 'left',
+  },
+  linkHome: {
+    width: '47%',
+    marginLeft: 30,
+    fontWeight: '700',
+    fontSize: '1.3rem',
+    color: firstDarkColor,
   },
 });
 

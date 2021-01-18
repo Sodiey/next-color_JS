@@ -17,7 +17,7 @@ export const useColors = (rows) => {
         throw new Error(err);
       }
     });
-  }, [fetchColor, rows, more]);
+  }, [more]);
   if (colors.length >= rows) return [colors, false, fetchMore];
 
   return [colors, true];

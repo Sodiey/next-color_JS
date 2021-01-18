@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 import Head from 'next/head';
 import styles from '../styles/Home.module.css';
 import Main from '../components/Main';
@@ -14,11 +14,11 @@ const MyButton = ({ onClick }) => {
 };
 
 export default function Home() {
-  const [color, setColor] = useState('#0070f3');
+  const [headerColor, setHeaderColor] = useState('#0070f3');
   const [colors, isFetching, fetchMore] = useColors(10);
 
   const handleColor = useCallback((color) => {
-    setColor(color);
+    setHeaderColor(color);
     window.scrollTo(0, 0);
   }, []);
 
@@ -36,7 +36,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <span style={{ color: color }}>Next.js</span>
+          Welcome to <span style={{ color: headerColor }}>Next.js</span>
         </h1>
 
         <p className={styles.description}>
