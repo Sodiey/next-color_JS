@@ -1,9 +1,10 @@
-import { useLayoutEffect, useState } from 'react';
-import { StyledContainer, StyledColumn } from '../../../styled/containers';
-import { fetchColorDetail } from '../../../api/fetchColor';
-import { CardButton, LinkButton } from '../../../styled/button';
-import { WithThemeText } from '../../../styled/text';
+import { useEffect, useLayoutEffect, useState } from 'react';
+import { StyledContainer, StyledColumn, Card } from 'styled/containers';
+import { fetchColorDetail } from 'api/fetchColor';
+import { LinkButton, DryButton } from 'styled/button';
+import { WithThemeText } from 'styled/text';
 import Link from 'next/link';
+import { generateParameter } from 'api/utils';
 
 import { useRouter } from 'next/router';
 
@@ -23,31 +24,80 @@ const Hr = ({ contrast }) => (
   />
 );
 
+const CopyText = ({ hasCopied, contrast, handleCopy }) => (
+  <div
+    style={{
+      border: `2px solid ${hasCopied ? 'green' : contrast.value}`,
+      borderRadius: '10px',
+      padding: 5,
+      position: 'absolute',
+      top: 5,
+      right: 5,
+    }}
+  >
+    <DryButton onClick={handleCopy}>
+      <WithThemeText
+        style={{ margin: 0 }}
+        size=".8rem"
+        contrast={contrast.value}
+        id="copy-text"
+      >
+        Copy
+      </WithThemeText>
+    </DryButton>
+  </div>
+);
+
 const RederItem = ({ color }) => {
   const { hex, contrast, name } = color;
   const withoutHashtag = hex.value.substring(1, hex.value.length);
+  const [hasCopied, setHasCopied] = useState(false);
+  useEffect(() => {
+    if (hasCopied) {
+      const cleanUp = setTimeout(() => {
+        setHasCopied(false);
+      }, 500);
+      return () => {
+        clearTimeout(cleanUp);
+      };
+    }
+  }, [hasCopied]);
 
+  const _handleCopy = () => {
+    let copyText = hex.value;
+    navigator.clipboard.writeText(copyText);
+    setHasCopied(true);
+  };
   return (
     <StyledColumn color={hex.value}>
-      <CardButton>
+      <Card>
         <WithThemeText contrast={contrast.value}>{name.value}</WithThemeText>
+        <CopyText
+          hasCopied={hasCopied}
+          contrast={contrast}
+          handleCopy={_handleCopy}
+        />
         <WithThemeText style={{ fontSize: '1rem' }} contrast={contrast.value}>
           {hex.value}
         </WithThemeText>
         <Hr contrast={contrast.value} />
         <Link
           href="/detail/[id]/"
-          as={`/detail/${withoutHashtag + '-' + name.value}`}
+          as={`/detail/${generateParameter({
+            value: hex.value,
+            name: name.value,
+            contrast: contrast.value,
+          })}`}
         >
           <LinkButton contrast={contrast.value}>See detail</LinkButton>
         </Link>
-      </CardButton>
+      </Card>
     </StyledColumn>
   );
 };
 
-const HeaderDetail = ({ item: { name, value, theme }, firstDarkColor }) => {
-  const styles = styleSheet(value, theme, firstDarkColor);
+const HeaderDetail = ({ item: { name, value, theme }, machColor }) => {
+  const styles = styleSheet(value, theme, machColor);
 
   return (
     <>
@@ -56,8 +106,8 @@ const HeaderDetail = ({ item: { name, value, theme }, firstDarkColor }) => {
           <Link href="/">Home</Link>
         </div>
         <div>
-          <h1>{name}</h1>
-          <h4 style={{ textAlign: 'center' }}>#{value}</h4>
+          <h1 style={{ marginBottom: 0 }}>{name}</h1>
+          <h4 style={{ textAlign: 'center', marginTop: 10 }}>- #{value}</h4>
         </div>
       </div>
       <div style={styles.sectionTitle}>
@@ -82,15 +132,15 @@ function Detail() {
 
   if (!id) return null;
   const [name, value, theme] = useSplitId(id);
-
   return (
     <>
       <HeaderDetail
-        firstDarkColor={data?.colors[0].hex.value}
+        machColor={data?.colors[theme === 'dark' ? 9 : 0].hex.value}
         item={{ name, value, theme }}
       />
       <StyledContainer>
         {data?.colors.map((clr, i) => {
+          if (i > 5) return;
           return <RederItem key={i} color={clr} />;
         })}
       </StyledContainer>
@@ -98,7 +148,7 @@ function Detail() {
   );
 }
 
-const styleSheet = (color, theme, firstDarkColor) => ({
+const styleSheet = (color, theme, machColor) => ({
   header: {
     backgroundColor: `#${color}`,
     color: theme === 'light' ? '#000' : '#fff',
@@ -115,7 +165,7 @@ const styleSheet = (color, theme, firstDarkColor) => ({
     marginLeft: 30,
     fontWeight: '700',
     fontSize: '1.3rem',
-    color: firstDarkColor,
+    color: machColor,
   },
 });
 

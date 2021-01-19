@@ -1,7 +1,8 @@
 import Link from 'next/link';
-import { WithThemeText } from '../styled/text';
-import { CardButton, LinkButton } from '../styled/button';
-import { StyledContainer, StyledColumn } from '../styled/containers';
+import { WithThemeText } from 'styled/text';
+import { LinkButton, DryButton } from 'styled/button';
+import { StyledContainer, StyledColumn, Card } from 'styled/containers';
+import { generateParameter } from 'api/utils';
 
 const WithLoading = ({ isFetching, children }) => {
   return isFetching ? (
@@ -25,26 +26,38 @@ const Hr = ({ contrast }) => (
     }}
   />
 );
-
-function generateParameter({ value, name, contrast }) {
-  const withoutHashtag = value.substring(1, value.length);
-  const theme = contrast === '#000000' ? 'light' : 'dark';
-  return withoutHashtag + '-' + name + '-' + theme;
-}
+const Try = ({ contrast, onClick }) => (
+  <div
+    style={{
+      border: `2px solid ${contrast}`,
+      borderRadius: '10px',
+      padding: '5px 8px',
+      position: 'absolute',
+      top: 5,
+      right: 5,
+    }}
+  >
+    <DryButton onClick={onClick}>
+      <WithThemeText style={{ margin: 0 }} size="1rem" contrast={contrast}>
+        Try
+      </WithThemeText>
+    </DryButton>
+  </div>
+);
 
 const RenderItem = ({ item, handleColor }) => {
-  RenderItem.prototype.title = item.value;
   const { value, name, contrast } = item;
-
+  if (name === 'Black') return null;
   return (
     <StyledColumn color={value}>
-      <CardButton onClick={handleColor.bind(this, value)}>
+      <Card>
         <WithThemeText contrast={contrast}>{name}</WithThemeText>
         <Hr contrast={contrast} />
+        <Try contrast={contrast} onClick={handleColor.bind(this, value)} />
         <Link href="/detail/[id]/" as={`/detail/${generateParameter(item)}`}>
           <LinkButton contrast={contrast}>See detail</LinkButton>
         </Link>
-      </CardButton>
+      </Card>
     </StyledColumn>
   );
 };

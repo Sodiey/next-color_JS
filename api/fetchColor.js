@@ -1,6 +1,11 @@
 import axios from 'axios';
 export const fetchColor = async () => {
-  const color = Math.floor(Math.random() * 16777215).toString(16);
+  let color = Math.floor(Math.random() * 16777215).toString(16);
+  // if (color.length != 6) {
+  //   let addOne = Math.floor(Math.random() * 10).toString();
+  //   color += addOne;
+  //   console.log(color);
+  // }
   try {
     const res = await axios.get(`https://www.thecolorapi.com/id?hex=${color}`);
     return {
@@ -16,7 +21,7 @@ export const fetchColor = async () => {
 export const fetchColorDetail = async (color) => {
   try {
     const res = await axios.get(
-      `https://www.thecolorapi.com/scheme?hex=${color}`
+      `https://www.thecolorapi.com/scheme?hex=${color}&count=10`
     );
     return res.data;
   } catch (err) {

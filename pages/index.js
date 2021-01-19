@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import Head from 'next/head';
-import styles from '../styles/Home.module.css';
-import Main from '../components/Main';
-import { useColors } from '../api/useColor';
-import { FetchButton } from '../styled/button';
+import styles from 'styles/Home.module.css';
+import Main from 'components/Main';
+import { useColors } from 'api/useColor';
+import { FetchButton } from 'styled/button';
 
 const MyButton = ({ onClick }) => {
   return (
@@ -15,7 +15,7 @@ const MyButton = ({ onClick }) => {
 
 export default function Home() {
   const [headerColor, setHeaderColor] = useState('#0070f3');
-  const [colors, isFetching, fetchMore] = useColors(10);
+  const [colors, isFetching, fetchMore] = useColors(20);
 
   const handleColor = useCallback((color) => {
     setHeaderColor(color);
@@ -49,3 +49,5 @@ export default function Home() {
     </div>
   );
 }
+
+//GREAT Match  - #031609 (is Dark ) _with - rgb(25, 204, 82) (is Light )
