@@ -1,16 +1,20 @@
 import styled from 'styled-components';
 
 export const FetchButton = styled.button`
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
+  background-color: #efe8f2;
   outline: 0;
-  padding: 10px;
   border: none;
+  font-size: 1rem;
+  color: #a08c5f;
+  font-weight: 700;
+  letter-spacing: 2px;
   :hover,
   :focus,
   :active {
-    border: 2px solid #0070f3;
+    border: 2px solid #201b15;
     cursor: pointer;
   }
 `;

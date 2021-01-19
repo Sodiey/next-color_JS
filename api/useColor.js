@@ -1,16 +1,28 @@
 import { useEffect, useState } from 'react';
 import { fetchColor } from './fetchColor';
+import * as Please from 'pleasejs';
 
-export const useColors = (rows) => {
-  const fakeArray = Array.from({ length: rows });
+const generateColors = (num) => {
+  const fake = Array(num).fill(0);
+  const fill = fake.map(() => {
+    return Please.make_color({ full_random: true })[0];
+  });
+  return fill;
+};
+
+export const useColors = (rows, { reset }) => {
+  const colorsArray = typeof rows === 'number' ? generateColors(rows) : rows;
   const [colors, setColors] = useState([]);
   const [more, setMore] = useState(false);
-  const fetchMore = () => setMore(!more);
+  const fetchMore = () => {
+    if (reset) setColors([]);
+    setMore(!more);
+  };
 
   useEffect(() => {
-    fakeArray.map(async () => {
+    colorsArray.map(async (color, i) => {
       try {
-        const res = await fetchColor();
+        const res = await fetchColor(color);
         setColors((prev) => [...prev, res]);
       } catch (err) {
         console.log(err);
@@ -18,7 +30,9 @@ export const useColors = (rows) => {
       }
     });
   }, [more]);
+
   if (colors.length >= rows) return [colors, false, fetchMore];
 
-  return [colors, true];
+  return [colors, true, fetchMore];
 };
+

@@ -15,7 +15,7 @@ const MyButton = ({ onClick }) => {
 
 export default function Home() {
   const [headerColor, setHeaderColor] = useState('#0070f3');
-  const [colors, isFetching, fetchMore] = useColors(20);
+  const [colors, isFetching, fetchMore] = useColors(20, { reset: false });
 
   const handleColor = useCallback((color) => {
     setHeaderColor(color);
@@ -34,7 +34,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
+      <header className={styles.main}>
         <h1 className={styles.title}>
           Welcome to <span style={{ color: headerColor }}>Next.js</span>
         </h1>
@@ -43,8 +43,8 @@ export default function Home() {
           Get started by editing{' '}
           <code className={styles.code}>pages/index.js</code>
         </p>
-        <MyButton onClick={handleFetchMore} />
-      </main>
+        <FetchButton onClick={handleFetchMore}>Fetch more</FetchButton>
+      </header>
       <Main colors={colors} isFetching={isFetching} handleColor={handleColor} />
     </div>
   );

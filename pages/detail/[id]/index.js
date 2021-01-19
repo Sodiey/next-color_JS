@@ -4,7 +4,9 @@ import { fetchColorDetail } from 'api/fetchColor';
 import { LinkButton, DryButton } from 'styled/button';
 import { WithThemeText } from 'styled/text';
 import Link from 'next/link';
-import { generateParameter } from 'api/utils';
+import { generateParameter, ColorModel } from 'api/utils';
+import Hr from 'components/Hr';
+import MatchedColors from 'components/MatchedColors';
 
 import { useRouter } from 'next/router';
 
@@ -15,14 +17,6 @@ const useSplitId = (id) => {
   const theme = splitId[2];
   return [name, value, theme];
 };
-
-const Hr = ({ contrast }) => (
-  <hr
-    style={{
-      borderColor: contrast,
-    }}
-  />
-);
 
 const CopyText = ({ hasCopied, contrast, handleCopy }) => (
   <div
@@ -80,21 +74,37 @@ const RederItem = ({ color }) => {
         <WithThemeText style={{ fontSize: '1rem' }} contrast={contrast.value}>
           {hex.value}
         </WithThemeText>
-        <Hr contrast={contrast.value} />
-        <Link
-          href="/detail/[id]/"
-          as={`/detail/${generateParameter({
-            value: hex.value,
-            name: name.value,
-            contrast: contrast.value,
-          })}`}
+        <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+          }}
         >
-          <LinkButton contrast={contrast.value}>See detail</LinkButton>
-        </Link>
+          <Hr contrast={contrast.value} />
+          <Link
+            href="/detail/[id]/"
+            as={`/detail/${generateParameter({
+              value: hex.value,
+              name: name.value,
+              contrast: contrast.value,
+            })}`}
+          >
+            <LinkButton contrast={contrast.value}>See detail</LinkButton>
+          </Link>
+        </div>
       </Card>
     </StyledColumn>
   );
 };
+
+const SectionTitle = ({ title }) => (
+  <div style={{ width: '100vw', paddingLeft: '3rem', textAlign: 'left' }}>
+    <h1>{title}</h1>
+    <Hr />
+  </div>
+);
 
 const HeaderDetail = ({ item: { name, value, theme }, machColor }) => {
   const styles = styleSheet(value, theme, machColor);
@@ -110,10 +120,7 @@ const HeaderDetail = ({ item: { name, value, theme }, machColor }) => {
           <h4 style={{ textAlign: 'center', marginTop: 10 }}>- #{value}</h4>
         </div>
       </div>
-      <div style={styles.sectionTitle}>
-        <h1>Pallete</h1>
-        <Hr />
-      </div>
+      <SectionTitle title="Pallete" />
     </>
   );
 };
@@ -124,9 +131,11 @@ function Detail() {
     query: { id },
   } = useRouter();
 
-  useLayoutEffect(() => {
+  //useLayoutEffect
+  useEffect(() => {
     if (id) {
       fetchColorDetail(value).then((data) => setData(data));
+      // data.seed holds the color OBJ that the url is based
     }
   }, [id]);
 
@@ -140,10 +149,22 @@ function Detail() {
       />
       <StyledContainer>
         {data?.colors.map((clr, i) => {
-          if (i > 5) return;
+          if (i > 4) return;
           return <RederItem key={i} color={clr} />;
         })}
       </StyledContainer>
+      <SectionTitle title="Matched Colors" />
+      <MatchedColors
+        value={value}
+        render={(colors) => (
+          <StyledContainer>
+            {colors?.map((clr, i) => {
+              const colorObj = new ColorModel(clr);
+              return <RederItem key={i} color={colorObj} />;
+            })}
+          </StyledContainer>
+        )}
+      />
     </>
   );
 }
@@ -154,11 +175,6 @@ const styleSheet = (color, theme, machColor) => ({
     color: theme === 'light' ? '#000' : '#fff',
     display: 'flex',
     alignItems: 'center',
-  },
-  sectionTitle: {
-    width: '100vw',
-    paddingLeft: '3rem',
-    textAlign: 'left',
   },
   linkHome: {
     width: '47%',

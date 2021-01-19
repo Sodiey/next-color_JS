@@ -17,6 +17,8 @@ export const StyledColumn = styled.div`
 export const Card = styled.div`
   width: 100%;
   background-color: transparent;
+  display: flex;
+  flex-direction: column;
   border: 0;
   position: relative;
   height: 100%;

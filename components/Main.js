@@ -3,6 +3,7 @@ import { WithThemeText } from 'styled/text';
 import { LinkButton, DryButton } from 'styled/button';
 import { StyledContainer, StyledColumn, Card } from 'styled/containers';
 import { generateParameter } from 'api/utils';
+import Hr from 'components/Hr';
 
 const WithLoading = ({ isFetching, children }) => {
   return isFetching ? (
@@ -19,13 +20,6 @@ const WithLoading = ({ isFetching, children }) => {
   );
 };
 
-const Hr = ({ contrast }) => (
-  <hr
-    style={{
-      borderColor: contrast,
-    }}
-  />
-);
 const Try = ({ contrast, onClick }) => (
   <div
     style={{
@@ -52,11 +46,22 @@ const RenderItem = ({ item, handleColor }) => {
     <StyledColumn color={value}>
       <Card>
         <WithThemeText contrast={contrast}>{name}</WithThemeText>
-        <Hr contrast={contrast} />
-        <Try contrast={contrast} onClick={handleColor.bind(this, value)} />
-        <Link href="/detail/[id]/" as={`/detail/${generateParameter(item)}`}>
-          <LinkButton contrast={contrast}>See detail</LinkButton>
-        </Link>
+        <div
+          style={{
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Hr contrast={contrast} />
+          <Try contrast={contrast} onClick={handleColor.bind(this, value)} />
+          <Link href="/detail/[id]/" as={`/detail/${generateParameter(item)}`}>
+            <LinkButton style={{ alignSelf: 'end' }} contrast={contrast}>
+              See detail
+            </LinkButton>
+          </Link>
+        </div>
       </Card>
     </StyledColumn>
   );
