@@ -45,7 +45,12 @@ const RenderItem = ({ item, handleColor }) => {
   return (
     <StyledColumn color={value}>
       <Card>
-        <WithThemeText contrast={contrast}>{name}</WithThemeText>
+        <WithThemeText
+          onClick={handleColor.bind(this, value, 'bg')}
+          contrast={contrast}
+        >
+          {name}
+        </WithThemeText>
         <div
           style={{
             height: '100%',
@@ -55,7 +60,10 @@ const RenderItem = ({ item, handleColor }) => {
           }}
         >
           <Hr contrast={contrast} />
-          <Try contrast={contrast} onClick={handleColor.bind(this, value)} />
+          <Try
+            contrast={contrast}
+            onClick={handleColor.bind(this, value, 'title')}
+          />
           <Link href="/detail/[id]/" as={`/detail/${generateParameter(item)}`}>
             <LinkButton style={{ alignSelf: 'end' }} contrast={contrast}>
               See detail

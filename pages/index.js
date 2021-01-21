@@ -5,20 +5,14 @@ import Main from 'components/Main';
 import { useColors } from 'api/useColor';
 import { FetchButton } from 'styled/button';
 
-const MyButton = ({ onClick }) => {
-  return (
-    <div>
-      <FetchButton onClick={onClick}>Fetch more</FetchButton>
-    </div>
-  );
-};
-
 export default function Home() {
   const [headerColor, setHeaderColor] = useState('#0070f3');
+  const [bgColor, setBgColor] = useState('#f2efe8');
   const [colors, isFetching, fetchMore] = useColors(20, { reset: false });
 
-  const handleColor = useCallback((color) => {
-    setHeaderColor(color);
+  const handleColor = useCallback((color, node) => {
+    if (node === 'bg') setBgColor(color);
+    else setHeaderColor(color);
     window.scrollTo(0, 0);
   }, []);
 
@@ -28,7 +22,7 @@ export default function Home() {
   }, [fetchMore]);
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ backgroundColor: bgColor }}>
       <Head>
         <title>Create Next App</title>
         <link rel="icon" href="/favicon.ico" />
@@ -36,12 +30,11 @@ export default function Home() {
 
       <header className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to <span style={{ color: headerColor }}>Next.js</span>
+          Welcome to <span style={{ color: headerColor }}>Color</span>.js
         </h1>
 
         <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
+          Get started by coping <code className={styles.code}>{bgColor}</code>
         </p>
         <FetchButton onClick={handleFetchMore}>Fetch more</FetchButton>
       </header>

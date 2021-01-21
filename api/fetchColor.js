@@ -26,7 +26,6 @@ export const fetchColorDetail = async (color) => {
     const res = await axios.get(
       `https://www.thecolorapi.com/scheme?hex=${color}&count=10&mode=monochrome-dark`
     );
-    console.log(res);
     return res.data;
   } catch (err) {
     console.log(err);
