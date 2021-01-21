@@ -85,11 +85,14 @@ const RederItem = ({ color }) => {
           <Hr contrast={contrast.value} />
           <Link
             href="/detail/[id]/"
-            as={`/detail/${generateParameter({
-              value: hex.value,
-              name: name.value,
-              contrast: contrast.value,
-            })}`}
+            as={
+              process.env.BACKEND_URL +
+              `/detail/${generateParameter({
+                value: hex.value,
+                name: name.value,
+                contrast: contrast.value,
+              })}`
+            }
           >
             <LinkButton contrast={contrast.value}>See detail</LinkButton>
           </Link>
@@ -113,7 +116,9 @@ const HeaderDetail = ({ item: { name, value, theme }, machColor }) => {
     <>
       <div style={styles.header}>
         <div style={styles.linkHome}>
-          <Link href="/">Home</Link>
+          <Link href="/" as={process.env.BACKEND_URL + '/'}>
+            Home
+          </Link>
         </div>
         <div>
           <h1 style={{ marginBottom: 0 }}>{name}</h1>

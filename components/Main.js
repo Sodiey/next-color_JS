@@ -42,6 +42,7 @@ const Try = ({ contrast, onClick }) => (
 const RenderItem = ({ item, handleColor }) => {
   const { value, name, contrast } = item;
   if (name === 'Black') return null;
+
   return (
     <StyledColumn color={value}>
       <Card>
@@ -64,7 +65,10 @@ const RenderItem = ({ item, handleColor }) => {
             contrast={contrast}
             onClick={handleColor.bind(this, value, 'title')}
           />
-          <Link href="/detail/[id]/" as={`/detail/${generateParameter(item)}`}>
+          <Link
+            href="/detail/[id]/"
+            as={process.env.BACKEND_URL + `/detail/${generateParameter(item)}`}
+          >
             <LinkButton style={{ alignSelf: 'end' }} contrast={contrast}>
               See detail
             </LinkButton>
