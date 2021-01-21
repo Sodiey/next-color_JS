@@ -4,7 +4,6 @@ import styles from 'styles/Home.module.css';
 import Main from 'components/Main';
 import { useColors } from 'api/useColor';
 import { FetchButton } from 'styled/button';
-import Link from 'next/link';
 
 export default function Home() {
   const [headerColor, setHeaderColor] = useState('#0070f3');
@@ -33,10 +32,6 @@ export default function Home() {
         <h1 className={styles.title}>
           Welcome to <span style={{ color: headerColor }}>Color</span>.js
         </h1>
-        <Link href="/" as={process.env.BACKEND_URL + '/'}>
-          Home
-        </Link>
-
         <p className={styles.description}>
           Get started by coping <code className={styles.code}>{bgColor}</code>
         </p>

@@ -84,7 +84,7 @@ const RederItem = ({ color }) => {
         >
           <Hr contrast={contrast.value} />
           <Link
-            href="/detail/[id]/"
+            href="/detail/[id]"
             as={
               process.env.BACKEND_URL +
               `/detail/${generateParameter({
