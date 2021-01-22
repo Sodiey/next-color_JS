@@ -44,7 +44,6 @@ const CopyText = ({ hasCopied, contrast, handleCopy }) => (
 
 const RederItem = ({ color }) => {
   const { hex, contrast, name } = color;
-  const withoutHashtag = hex.value.substring(1, hex.value.length);
   const [hasCopied, setHasCopied] = useState(false);
   useEffect(() => {
     if (hasCopied) {
@@ -85,14 +84,11 @@ const RederItem = ({ color }) => {
           <Hr contrast={contrast.value} />
           <Link
             href="/detail/[id]"
-            as={
-              process.env.BACKEND_URL +
-              `/detail/${generateParameter({
-                value: hex.value,
-                name: name.value,
-                contrast: contrast.value,
-              })}`
-            }
+            as={`/detail/${generateParameter({
+              value: hex.value,
+              name: name.value,
+              contrast: contrast.value,
+            })}`}
           >
             <LinkButton contrast={contrast.value}>See detail</LinkButton>
           </Link>
@@ -116,7 +112,7 @@ const HeaderDetail = ({ item: { name, value, theme }, machColor }) => {
     <>
       <div style={styles.header}>
         <div style={styles.linkHome}>
-          <Link href="/" as={process.env.BACKEND_URL + '/'}>
+          <Link href="/" as={'/'}>
             Home
           </Link>
         </div>
@@ -135,7 +131,6 @@ function Detail() {
   const {
     query: { id },
   } = useRouter();
-
   //useLayoutEffect
   useEffect(() => {
     if (id) {

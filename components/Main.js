@@ -65,10 +65,7 @@ const RenderItem = ({ item, handleColor }) => {
             contrast={contrast}
             onClick={handleColor.bind(this, value, 'title')}
           />
-          <Link
-            href="/detail/[id]"
-            as={process.env.BACKEND_URL + `/detail/${generateParameter(item)}`}
-          >
+          <Link href="/detail/[id]" as={`/detail/${generateParameter(item)}`}>
             <LinkButton style={{ alignSelf: 'end' }} contrast={contrast}>
               See detail
             </LinkButton>

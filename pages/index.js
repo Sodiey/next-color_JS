@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import Head from 'next/head';
 import styles from 'styles/Home.module.css';
-import Main from 'components/Main';
+import Main from '../components/Main';
 import { useColors } from 'api/useColor';
 import { FetchButton } from 'styled/button';
 
