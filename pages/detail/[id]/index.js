@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
-import { StyledContainer, StyledColumn, Card } from 'styled/containers';
-import { fetchColorDetail } from 'api/fetchColor';
-import { LinkButton, DryButton } from 'styled/button';
-import { WithThemeText } from 'styled/text';
+// import { StyledContainer, StyledColumn, Card } from 'styled/containers';
+import {
+  StyledContainer,
+  StyledColumn,
+  Card,
+} from '../../../styled/containers';
+import { fetchColorDetail } from '../../../api/fetchColor';
+import { LinkButton, DryButton } from '../../../styled/button';
+import { WithThemeText } from '../../../styled/text';
 import Link from 'next/link';
-import { generateParameter, ColorModel } from 'api/utils';
-import Hr from 'components/Hr';
-import MatchedColors from 'components/MatchedColors';
+import { generateParameter, ColorModel } from '../../../api/utils';
+import Hr from '../../../components/Hr';
+import MatchedColors from '../../../components/MatchedColors';
 
 import { useRouter } from 'next/router';
 

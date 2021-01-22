@@ -1,6 +1,6 @@
-import { useRef, useMemo } from 'react';
+import { useRef } from 'react';
 import * as Please from 'pleasejs';
-import { useColors } from 'api/useColor';
+import { useColors } from '../api/useColor';
 
 const MatchedColors = ({ value, render }) => {
   const colorRef = useRef(value);

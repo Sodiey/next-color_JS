@@ -1,9 +1,9 @@
 import Link from 'next/link';
-import { WithThemeText } from 'styled/text';
-import { LinkButton, DryButton } from 'styled/button';
-import { StyledContainer, StyledColumn, Card } from 'styled/containers';
-import { generateParameter } from 'api/utils';
-import Hr from 'components/Hr';
+import { WithThemeText } from '../styled/text';
+import { LinkButton, DryButton } from '../styled/button';
+import { StyledContainer, StyledColumn, Card } from '../styled/containers';
+import { generateParameter } from '../api/utils';
+import Hr from './Hr';
 
 const WithLoading = ({ isFetching, children }) => {
   return isFetching ? (

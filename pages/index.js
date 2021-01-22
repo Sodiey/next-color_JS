@@ -1,9 +1,9 @@
 import { useCallback, useState } from 'react';
 import Head from 'next/head';
-import styles from 'styles/Home.module.css';
+import styles from '../styles/Home.module.css';
 import Main from '../components/Main';
-import { useColors } from 'api/useColor';
-import { FetchButton } from 'styled/button';
+import { useColors } from '../api/useColor';
+import { FetchButton } from '../styled/button';
 
 export default function Home() {
   const [headerColor, setHeaderColor] = useState('#0070f3');
